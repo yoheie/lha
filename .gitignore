@@ -25,6 +25,7 @@ src/lha
 src/Makefile
 src/Makefile.in
 stamp-h1
+lha.spec
 tests/lha-test
 tests/Makefile
 tests/Makefile.in

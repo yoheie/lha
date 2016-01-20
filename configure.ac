@@ -334,4 +334,5 @@ esac
 
 AC_CONFIG_FILES([Makefile src/Makefile man/Makefile olddoc/Makefile])
 AC_CONFIG_FILES([tests/Makefile tests/lha-test])
+AC_CONFIG_FILES([lha.spec])
 AC_OUTPUT
