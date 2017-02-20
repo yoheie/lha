@@ -40,7 +40,7 @@ make
 
 %install
 rm -rf ${RPM_BUILD_ROOT}
-make prefix=${RPM_BUILD_ROOT}/%{_prefix} mandir=${RPM_BUILD_ROOT}/%{_mandir} install
+make DESTDIR=${RPM_BUILD_ROOT} install
 
 %clean
 rm -rf ${RPM_BUILD_ROOT}
@@ -52,5 +52,8 @@ rm -rf ${RPM_BUILD_ROOT}
 %{_mandir}/man1/lha.1*
 
 %changelog
+* Mon Feb 20 2017 Yohei Endo <yoheie@gmail.com>
+- Use DESTDIR on make install
+
 * Wed Jan 20 2016 Yohei Endo <yoheie@gmail.com>
 - Autotoolized initial release
