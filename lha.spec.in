@@ -3,7 +3,7 @@
 
 Name: @PACKAGE@
 Version: %{rpmver}
-Release: 1
+Release: 1%{?dist}
 Source: @PACKAGE@-@VERSION@.tar.gz
 
 Summary: LHa file archiving utility with compress
