@@ -52,6 +52,9 @@ rm -rf ${RPM_BUILD_ROOT}
 %{_mandir}/man1/lha.1*
 
 %changelog
+* Wed Apr 12 2017 Yohei Endo <yoheie@gmail.com>
+- Add %%{?dist} to Release
+
 * Mon Feb 20 2017 Yohei Endo <yoheie@gmail.com>
 - Use DESTDIR on make install
 
