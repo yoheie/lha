@@ -35,7 +35,7 @@ LHa は効率の高い圧縮機能を持つファイルアーカイバです。
 %setup -q -n %{setupdir}
 
 %build
-./configure --prefix=%{_prefix} --mandir=%{_mandir}
+./configure --prefix=%{_prefix} --mandir=%{_mandir} --enable-multibyte-filename=utf8
 make
 
 %install
@@ -52,6 +52,9 @@ rm -rf ${RPM_BUILD_ROOT}
 %{_mandir}/man1/lha.1*
 
 %changelog
+* Wed Jul 12 2017 Yohei Endo <yoheie@gmail.com>
+- Add "--enable-multibyte-filename=utf8" configure option
+
 * Wed Apr 12 2017 Yohei Endo <yoheie@gmail.com>
 - Add %%{?dist} to Release
 
