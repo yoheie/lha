@@ -47,11 +47,14 @@ rm -rf ${RPM_BUILD_ROOT}
 
 %files
 %defattr(-,root,root)
-%doc README.jp.md header.doc.jp ChangeLog Hacking_of_LHa olddoc/
+%doc README.jp.md header.doc.jp Hacking_of_LHa olddoc/
 %{_prefix}/bin/lha
 %{_mandir}/man1/lha.1*
 
 %changelog
+* Mon Oct 28 2019 Yohei Endo <yoheie@gmail.com>
+- ChangeLog is moved into olddoc/
+
 * Wed Jul 12 2017 Yohei Endo <yoheie@gmail.com>
 - Add "--enable-multibyte-filename=utf8" configure option
 
