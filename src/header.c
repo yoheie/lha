@@ -1265,6 +1265,17 @@ get_header(fp, hdr)
         filename_case = NONE;
         break;
 
+    case EXTEND_AMIGA:
+        {
+            /* workaround */
+            size_t len = strlen(hdr->name);
+            if (len > 0 && (unsigned char)hdr->name[len-1] == LHA_PATHSEP
+                && memcmp(hdr->method, LZHUFF0_METHOD, sizeof(hdr->method)) == 0) {
+                /* replace with "-lhd-" */
+                memcpy(hdr->method, LZHDIRS_METHOD, sizeof(hdr->method));
+            }
+        }
+        break;
     default:
         filename_case = convertcase ? TO_LOWER : NONE;
         break;
@@ -1482,27 +1493,27 @@ init_header(name, v_stat, hdr)
 	    hdr->unix_mode = hdr->unix_mode | UNIX_FILE_DIRECTORY;
     if (S_ISLNK(v_stat->st_mode))
 	    hdr->unix_mode = hdr->unix_mode | UNIX_FILE_SYMLINK;
-    if (v_stat->st_mode & S_IRUSR) 
+    if (v_stat->st_mode & S_IRUSR)
 	    hdr->unix_mode = hdr->unix_mode | UNIX_OWNER_READ_PERM;
-    if (v_stat->st_mode & S_IRGRP) 
+    if (v_stat->st_mode & S_IRGRP)
 	    hdr->unix_mode = hdr->unix_mode | UNIX_GROUP_READ_PERM;
-    if (v_stat->st_mode & S_IROTH) 
+    if (v_stat->st_mode & S_IROTH)
 	    hdr->unix_mode = hdr->unix_mode | UNIX_OTHER_READ_PERM;
-    if (v_stat->st_mode & S_IWUSR) 
+    if (v_stat->st_mode & S_IWUSR)
 	    hdr->unix_mode = hdr->unix_mode | UNIX_OWNER_WRITE_PERM;
-    if (v_stat->st_mode & S_IWGRP) 
+    if (v_stat->st_mode & S_IWGRP)
 	    hdr->unix_mode = hdr->unix_mode | UNIX_GROUP_WRITE_PERM;
-    if (v_stat->st_mode & S_IWOTH) 
+    if (v_stat->st_mode & S_IWOTH)
 	    hdr->unix_mode = hdr->unix_mode | UNIX_OTHER_WRITE_PERM;
-    if (v_stat->st_mode & S_IXUSR) 
+    if (v_stat->st_mode & S_IXUSR)
 	    hdr->unix_mode = hdr->unix_mode | UNIX_OWNER_EXEC_PERM;
-    if (v_stat->st_mode & S_IXGRP) 
+    if (v_stat->st_mode & S_IXGRP)
 	    hdr->unix_mode = hdr->unix_mode | UNIX_GROUP_EXEC_PERM;
-    if (v_stat->st_mode & S_IXOTH) 
+    if (v_stat->st_mode & S_IXOTH)
 	    hdr->unix_mode = hdr->unix_mode | UNIX_OTHER_EXEC_PERM;
-    if (v_stat->st_mode & S_ISUID) 
+    if (v_stat->st_mode & S_ISUID)
 	    hdr->unix_mode = hdr->unix_mode | UNIX_SETUID;
-    if (v_stat->st_mode & S_ISGID) 
+    if (v_stat->st_mode & S_ISGID)
 	    hdr->unix_mode = hdr->unix_mode | UNIX_SETGID;
 #endif /* __DJGPP__ */
 #else
@@ -1912,6 +1923,11 @@ write_header(fp, hdr)
 #include <CoreFoundation/CFString.h>
 #include <CoreFoundation/CFStringEncodingExt.h>
 
+/* Derived from https://opensource.apple.com/source/CF/CF-1153.18/CFStringEncodingConverter.h */
+/* CFIndex is signed long */
+uint32_t CFStringEncodingBytesToUnicode(uint32_t encoding, uint32_t flags, const uint8_t *bytes, CFIndex numBytes, CFIndex *usedByteLen, UniChar *characters, CFIndex maxCharLen, CFIndex *usedCharLen);
+uint32_t CFStringEncodingUnicodeToBytes(uint32_t encoding, uint32_t flags, const UniChar *characters, CFIndex numChars, CFIndex *usedCharLen, uint8_t *bytes, CFIndex maxByteLen, CFIndex *usedByteLen);
+
 /* this is not need for Mac OS X v 10.2 later */
 enum {
   kCFStringEncodingAllowLossyConversion = 1,
@@ -1930,19 +1946,19 @@ enum {
 static int
 ConvertEncodingToUTF8(const char* inCStr,
                       char* outUTF8Buffer,
-                      int outUTF8BufferLength,
-                      unsigned long scriptEncoding,
-                      unsigned long flags)
+                      CFIndex outUTF8BufferLength,
+                      uint32_t scriptEncoding,
+                      uint32_t flags)
 {
-    unsigned long unicodeChars;
-    unsigned long srcCharsUsed;
-    unsigned long usedByteLen = 0;
+    CFIndex unicodeChars;
+    CFIndex srcCharsUsed;
+    CFIndex usedByteLen = 0;
     UniChar uniStr[512];
-    unsigned long cfResult;
+    uint32_t cfResult;
 
     cfResult = CFStringEncodingBytesToUnicode(scriptEncoding,
                                               flags,
-                                              (char *)inCStr,
+                                              (uint8_t *)inCStr,
                                               strlen(inCStr),
                                               &srcCharsUsed,
                                               uniStr,
@@ -1954,7 +1970,7 @@ ConvertEncodingToUTF8(const char* inCStr,
                                                   uniStr,
                                                   unicodeChars,
                                                   &srcCharsUsed,
-                                                  (char*)outUTF8Buffer,
+                                                  (uint8_t *)outUTF8Buffer,
                                                   outUTF8BufferLength - 1,
                                                   &usedByteLen);
         outUTF8Buffer[usedByteLen] = '\0';
@@ -1965,21 +1981,21 @@ ConvertEncodingToUTF8(const char* inCStr,
 
 static int
 ConvertUTF8ToEncoding(const char* inUTF8Buf,
-                      int inUTF8BufLength,
+                      CFIndex inUTF8BufLength,
                       char* outCStrBuffer,
-                      int outCStrBufferLength,
-                      unsigned long scriptEncoding,
-                      unsigned long flags)
+                      CFIndex outCStrBufferLength,
+                      uint32_t scriptEncoding,
+                      uint32_t flags)
 {
-    unsigned long unicodeChars;
-    unsigned long srcCharsUsed;
-    unsigned long usedByteLen = 0;
+    CFIndex unicodeChars;
+    CFIndex srcCharsUsed;
+    CFIndex usedByteLen = 0;
     UniChar uniStr[256];
-    unsigned long cfResult;
+    uint32_t cfResult;
 
     cfResult = CFStringEncodingBytesToUnicode(kCFStringEncodingUTF8,
                                               flags,
-                                              (char*)inUTF8Buf,
+                                              (uint8_t *)inUTF8Buf,
                                               inUTF8BufLength,
                                               &srcCharsUsed,
                                               uniStr,
@@ -1991,7 +2007,7 @@ ConvertUTF8ToEncoding(const char* inUTF8Buf,
                                                   uniStr,
                                                   unicodeChars,
                                                   &srcCharsUsed,
-                                                  (char*)outCStrBuffer,
+                                                  (uint8_t *)outCStrBuffer,
                                                   outCStrBufferLength - 1,
                                                   &usedByteLen);
         outCStrBuffer[usedByteLen] = '\0';
@@ -2004,7 +2020,7 @@ ConvertUTF8ToEncoding(const char* inUTF8Buf,
 #include <iconv.h>
 
 static int
-ConvertEncodingByIconv(const char *src, char *dst, int dstsize,
+ConvertEncodingByIconv(const char *src, char *dst, size_t dstsize,
                        const char *srcEnc, const char *dstEnc)
 {
     iconv_t ic;
