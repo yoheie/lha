@@ -47,11 +47,14 @@ rm -rf ${RPM_BUILD_ROOT}
 
 %files
 %defattr(-,root,root)
-%doc README.jp.md header.doc.jp Hacking_of_LHa olddoc/
+%doc README.md README.jp.md header.doc.md header.doc.jp Hacking_of_LHa olddoc/
 %{_prefix}/bin/lha
 %{_mandir}/man1/lha.1*
 
 %changelog
+* Sat Jan 09 2021 Yohei Endo <yoheie@gmail.com>
+- Add README.md and header.doc.md to %%doc
+
 * Mon Oct 28 2019 Yohei Endo <yoheie@gmail.com>
 - ChangeLog is moved into olddoc/
 
