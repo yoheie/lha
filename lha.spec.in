@@ -10,8 +10,8 @@ Summary: LHa file archiving utility with compress
 Summary(ja): LHa 高圧縮アーカイバ
 License: distributable
 Group: Applications/File
-Url: http://lha.osdn.jp/
-# Url: https://github.com/jca02266/lha
+Url: https://github.com/jca02266/lha
+# Url: http://lha.osdn.jp/
 # Url: http://www2m.biglobe.ne.jp/~dolphin/lha/lha.htm
 Packager: Yohei Endo <yoheie@gmail.com>
 
@@ -20,13 +20,13 @@ Prefix: %{_prefix}
 
 %description
 LHa is a file archiving utility with compress.
-This is autoconfiscated and bug-fixed version of original 1.14i.
+This is autotoolized and bug-fixed version of original 1.14i.
 Original 1.14i can be found at:
  http://www2m.biglobe.ne.jp/~dolphin/lha/prog/lha-114i.tar.gz
 
 %description -l ja
 LHa は効率の高い圧縮機能を持つファイルアーカイバです。
-このバージョンはオリジナルの 1.14i に autoconfiscate および
+このバージョンはオリジナルの 1.14i に autotool 対応および
 いくつかの bug fix をしたものです。
 オリジナルの 1.14i は以下の URI から入手可能です。
  http://www2m.biglobe.ne.jp/~dolphin/lha/prog/lha-114i.tar.gz
@@ -52,6 +52,9 @@ rm -rf ${RPM_BUILD_ROOT}
 %{_mandir}/man1/lha.1*
 
 %changelog
+* Thu Jun 16 2022 Yohei Endo <yoheie@gmail.com>
+- Fix URL and Description
+
 * Sat Jan 09 2021 Yohei Endo <yoheie@gmail.com>
 - Add README.md and header.doc.md to %%doc
 
