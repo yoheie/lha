@@ -95,7 +95,7 @@ write_pt_len(short n, short nbit, short i_special)
             putbits(3, k);
         else
             /* k=7 -> 1110  k=8 -> 11110  k=9 -> 111110 ... */
-            putbits(k - 3, USHRT_MAX << 1);
+            putbits(k - 3, (short)(USHRT_MAX << 1));
         if (i == i_special) {
             while (i < 6 && pt_len[i] == 0)
                 i++;
