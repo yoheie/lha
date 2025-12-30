@@ -19,7 +19,7 @@ patmatch(register char *p,  /* pattern */
 {
     char            pc; /* a single character from pattern */
 
-    while (pc = ((f && islower(*p)) ? toupper(*p++) : *p++)) {
+    while ((pc = ((f && islower(*p)) ? toupper(*p++) : *p++))) {
         if (pc == '*') {
             do {    /* look for match till s exhausted */
                 if (patmatch(p, s, f))
