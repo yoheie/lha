@@ -55,9 +55,7 @@ int default_system_kanji_code = NONE;
 #endif
 
 int
-calc_sum(p, len)
-    void *p;
-    int len;
+calc_sum(void *p, int len)
 {
     int sum = 0;
     unsigned char *pc = (unsigned char*)p;
@@ -68,8 +66,7 @@ calc_sum(p, len)
 }
 
 static void
-_skip_bytes(len)
-    int len;
+_skip_bytes(int len)
 {
     if (len < 0) {
       error("Invalid header: %d", len);
@@ -108,8 +105,7 @@ dump_get_byte()
 }
 
 static void
-dump_skip_bytes(len)
-    int len;
+dump_skip_bytes(int len)
 {
     if (len == 0) return;
     if (verbose_listing && verbose > 1) {
@@ -148,8 +144,7 @@ get_word()
 }
 
 static void
-put_word(v)
-    unsigned int    v;
+put_word(unsigned int v)
 {
     put_byte(v);
     put_byte(v >> 8);
@@ -231,9 +226,7 @@ put_longlongword(uint64_t v)
 #endif
 
 static int
-get_bytes(buf, len, size)
-    char *buf;
-    int len, size;
+get_bytes(char *buf, int len, int size)
 {
     int i;
 
@@ -272,9 +265,7 @@ get_bytes(buf, len, size)
 }
 
 static void
-put_bytes(buf, len)
-    char *buf;
-    int len;
+put_bytes(char *buf, int len)
 {
     int i;
     for (i = 0; i < len; i++)
@@ -282,16 +273,12 @@ put_bytes(buf, len)
 }
 
 void
-convert_filename(name, len, size,
-                 from_code, to_code,
-                 from_delim, to_delim,
-                 case_to)
-    char *name;
-    int len;                    /* length of name */
-    int size;                   /* size of name buffer */
-    int from_code, to_code, case_to;
-    char *from_delim, *to_delim;
-
+convert_filename(char *name,
+                 int len,       /* length of name */
+                 int size,      /* size of name buffer */
+                 int from_code, int to_code,
+                 char *from_delim, char *to_delim,
+                 int case_to)
 {
     int i;
 #ifdef MULTIBYTE_FILENAME
@@ -465,8 +452,7 @@ convert_filename(name, len, size,
  */
 
 static time_t
-generic_to_unix_stamp(t)
-    long t;
+generic_to_unix_stamp(long t)
 {
     struct tm tm;
 
@@ -488,8 +474,7 @@ generic_to_unix_stamp(t)
 }
 
 static long
-unix_to_generic_stamp(t)
-    time_t t;
+unix_to_generic_stamp(time_t t)
 {
     struct tm *tm = localtime(&t);
 
@@ -563,11 +548,7 @@ wintime_to_unix_stamp()
  */
 
 static ssize_t
-get_extended_header(fp, hdr, header_size, hcrc)
-    FILE *fp;
-    LzHeader *hdr;
-    size_t header_size;
-    unsigned int *hcrc;
+get_extended_header(FILE *fp, LzHeader *hdr, size_t header_size, unsigned int *hcrc)
 {
     char data[LZHEADER_STORAGE];
     int name_length;
@@ -815,10 +796,7 @@ get_extended_header(fp, hdr, header_size, hcrc)
  *
  */
 static int
-get_header_level0(fp, hdr, data)
-    FILE *fp;
-    LzHeader *hdr;
-    char *data;
+get_header_level0(FILE *fp, LzHeader *hdr, char *data)
 {
     size_t header_size;
     ssize_t remain_size;
@@ -938,10 +916,7 @@ get_header_level0(fp, hdr, data)
  *
  */
 static int
-get_header_level1(fp, hdr, data)
-    FILE *fp;
-    LzHeader *hdr;
-    char *data;
+get_header_level1(FILE *fp, LzHeader *hdr, char *data)
 {
     size_t header_size;
     ssize_t remain_size;
@@ -1040,10 +1015,7 @@ get_header_level1(fp, hdr, data)
  *
  */
 static int
-get_header_level2(fp, hdr, data)
-    FILE *fp;
-    LzHeader *hdr;
-    char *data;
+get_header_level2(FILE *fp, LzHeader *hdr, char *data)
 {
     size_t header_size;
     ssize_t remain_size;
@@ -1134,10 +1106,7 @@ get_header_level2(fp, hdr, data)
  *
  */
 static int
-get_header_level3(fp, hdr, data)
-    FILE *fp;
-    LzHeader *hdr;
-    char *data;
+get_header_level3(FILE *fp, LzHeader *hdr, char *data)
 {
     size_t header_size;
     ssize_t remain_size;
@@ -1197,9 +1166,7 @@ get_header_level3(fp, hdr, data)
 }
 
 boolean
-get_header(fp, hdr)
-    FILE *fp;
-    LzHeader *hdr;
+get_header(FILE *fp, LzHeader *hdr)
 {
     char data[LZHEADER_STORAGE];
 
@@ -1319,8 +1286,7 @@ get_header(fp, hdr)
 
 /* skip SFX header */
 int
-seek_lha_header(fp)
-    FILE *fp;
+seek_lha_header(FILE *fp)
 {
     unsigned char   buffer[64 * 1024]; /* max seek size */
     unsigned char  *p;
@@ -1461,10 +1427,7 @@ canon_path(char *newpath, char *path, size_t size)
 }
 
 void
-init_header(name, v_stat, hdr)
-    char           *name;
-    struct stat    *v_stat;
-    LzHeader       *hdr;
+init_header(char *name, struct stat *v_stat, LzHeader *hdr)
 {
     int             len;
 
@@ -1573,8 +1536,7 @@ init_header(name, v_stat, hdr)
 }
 
 static void
-write_unix_info(hdr)
-    LzHeader *hdr;
+write_unix_info(LzHeader *hdr)
 {
     /* UNIX specific informations */
 
@@ -1609,9 +1571,7 @@ write_unix_info(hdr)
 }
 
 static size_t
-write_header_level0(data, hdr, pathname)
-    LzHeader *hdr;
-    char *data, *pathname;
+write_header_level0(char *data, LzHeader *hdr, char *pathname)
 {
     int limit;
     int name_length;
@@ -1667,9 +1627,7 @@ write_header_level0(data, hdr, pathname)
 }
 
 static size_t
-write_header_level1(data, hdr, pathname)
-    LzHeader *hdr;
-    char *data, *pathname;
+write_header_level1(char *data, LzHeader *hdr, char *pathname)
 {
     int name_length, dir_length, limit;
     char *basename, *dirname;
@@ -1759,9 +1717,7 @@ write_header_level1(data, hdr, pathname)
 }
 
 static size_t
-write_header_level2(data, hdr, pathname)
-    LzHeader *hdr;
-    char *data, *pathname;
+write_header_level2(char *data, LzHeader *hdr, char *pathname)
 {
     int name_length, dir_length;
     char *basename, *dirname;
@@ -1851,9 +1807,7 @@ write_header_level2(data, hdr, pathname)
 }
 
 void
-write_header(fp, hdr)
-    FILE           *fp;
-    LzHeader       *hdr;
+write_header(FILE *fp, LzHeader *hdr)
 {
     size_t header_size;
     char data[LZHEADER_STORAGE];

@@ -9,15 +9,9 @@
 #include "lha.h"
 
 int
-encode_lzhuf(infp, outfp, size, original_size_var, packed_size_var,
-         name, hdr_method)
-    FILE           *infp;
-    FILE           *outfp;
-    off_t          size;
-    off_t          *original_size_var;
-    off_t          *packed_size_var;
-    char           *name;
-    char           *hdr_method;
+encode_lzhuf(FILE *infp, FILE *outfp,
+             off_t size, off_t *original_size_var, off_t *packed_size_var,
+             char *name, char *hdr_method)
 {
     static int method = -1;
     unsigned int crc;

@@ -630,9 +630,7 @@ parse_option(int argc, char **argv)
 
 /* ------------------------------------------------------------------------ */
 int
-main(argc, argv)
-    int             argc;
-    char           *argv[];
+main(int argc, char *argv[])
 {
     char           *p;
 
@@ -858,8 +856,7 @@ cleanup()
 }
 
 RETSIGTYPE
-interrupt(signo)
-    int signo;
+interrupt(int signo)
 {
     message("Interrupted");
 
@@ -876,13 +873,14 @@ interrupt(signo)
 /*                                                                          */
 /* ------------------------------------------------------------------------ */
 static int
-sort_by_ascii(a, b)
-    char          **a, **b;
+sort_by_ascii(const void *a, const void *b)
 {
+    char **pa = (char **)a;
+    char **pb = (char **)b;
     register char  *p, *q;
     register int    c1, c2;
 
-    p = *a, q = *b;
+    p = *pa, q = *pb;
     if (generic_format) {
         do {
             c1 = *(unsigned char *) p++;
@@ -914,8 +912,7 @@ sort_files()
 
 /* ------------------------------------------------------------------------ */
 void *
-xmalloc(size)
-    size_t size;
+xmalloc(size_t size)
 {
     void *p = malloc(size);
     if (!p)
@@ -925,9 +922,7 @@ xmalloc(size)
 
 /* ------------------------------------------------------------------------ */
 void *
-xrealloc(old, size)
-    void *old;
-    size_t size;
+xrealloc(void *old, size_t size)
 {
     void *p = (char *) realloc(old, size);
     if (!p)
@@ -936,8 +931,7 @@ xrealloc(old, size)
 }
 
 char *
-xstrdup(str)
-    char *str;
+xstrdup(char *str)
 {
     int len = strlen(str);
     char *p = (char *)xmalloc(len + 1);
@@ -965,8 +959,7 @@ xstrdup(str)
 
 /* ------------------------------------------------------------------------ */
 void
-init_sp(sp)
-    struct string_pool *sp;
+init_sp(struct string_pool *sp)
 {
     sp->size = 1024 - 8;    /* any ( >=0 ) */
     sp->used = 0;
@@ -976,10 +969,9 @@ init_sp(sp)
 
 /* ------------------------------------------------------------------------ */
 void
-add_sp(sp, name, len)
-    struct string_pool *sp;
-    char           *name;   /* stored '\0' at tail */
-    int             len;    /* include '\0' */
+add_sp(struct string_pool *sp,
+       char *name,          /* stored '\0' at tail */
+       int len)             /* include '\0' */
 {
     while (sp->used + len > sp->size) {
         sp->size *= 2;
@@ -992,10 +984,7 @@ add_sp(sp, name, len)
 
 /* ------------------------------------------------------------------------ */
 void
-finish_sp(sp, v_count, v_vector)
-    register struct string_pool *sp;
-    int            *v_count;
-    char         ***v_vector;
+finish_sp(register struct string_pool *sp, int *v_count, char ***v_vector)
 {
     int             i;
     register char  *p;
@@ -1015,8 +1004,7 @@ finish_sp(sp, v_count, v_vector)
 
 /* ------------------------------------------------------------------------ */
 void
-free_sp(vector)
-    char          **vector;
+free_sp(char **vector)
 {
     vector--;
     free(*vector);      /* free string pool */
@@ -1028,8 +1016,7 @@ free_sp(vector)
 /*                          READ DIRECTORY FILES                            */
 /* ------------------------------------------------------------------------ */
 static          boolean
-include_path_p(path, name)
-    char           *path, *name;
+include_path_p(char *path, char *name)
 {
     char           *n = name;
     while (*path)
@@ -1040,9 +1027,7 @@ include_path_p(path, name)
 
 /* ------------------------------------------------------------------------ */
 void
-cleaning_files(v_filec, v_filev)
-    int            *v_filec;
-    char         ***v_filev;
+cleaning_files(int *v_filec, char ***v_filev)
 {
     char           *flags;
     struct stat     stbuf;
@@ -1123,10 +1108,7 @@ cleaning_files(v_filec, v_filev)
 
 /* ------------------------------------------------------------------------ */
 boolean
-find_files(name, v_filec, v_filev)
-    char           *name;
-    int            *v_filec;
-    char         ***v_filev;
+find_files(char *name, int *v_filec, char ***v_filev)
 {
     struct string_pool sp;
     char            newname[FILENAME_LENGTH];
@@ -1209,9 +1191,7 @@ find_files(name, v_filec, v_filev)
 
 /* ------------------------------------------------------------------------ */
 void
-free_files(filec, filev)
-    int             filec;
-    char          **filev;
+free_files(int filec, char **filev)
 {
     free_sp(filev);
 }
@@ -1277,10 +1257,7 @@ build_temporary_name()
 
 /* ------------------------------------------------------------------------ */
 static void
-modify_filename_extention(buffer, ext, size)
-    char           *buffer;
-    char           *ext;
-    size_t size;
+modify_filename_extention(char *buffer, char *ext, size_t size)
 {
     register char  *p, *dot;
 
@@ -1300,10 +1277,7 @@ modify_filename_extention(buffer, ext, size)
 /* ------------------------------------------------------------------------ */
 /* build backup file name */
 void
-build_backup_name(buffer, original, size)
-    char           *buffer;
-    char           *original;
-    size_t size;
+build_backup_name(char *buffer, char *original, size_t size)
 {
     str_safe_copy(buffer, original, size);
     modify_filename_extention(buffer, BACKUPNAME_EXTENTION, size);    /* ".bak" */
@@ -1311,10 +1285,7 @@ build_backup_name(buffer, original, size)
 
 /* ------------------------------------------------------------------------ */
 void
-build_standard_archive_name(buffer, original, size)
-    char           *buffer;
-    char           *original;
-    size_t size;
+build_standard_archive_name(char *buffer, char *original, size_t size)
 {
     str_safe_copy(buffer, original, size);
     modify_filename_extention(buffer, ARCHIVENAME_EXTENTION, size);   /* ".lzh" */
@@ -1324,8 +1295,7 @@ build_standard_archive_name(buffer, original, size)
 /*                                                                          */
 /* ------------------------------------------------------------------------ */
 boolean
-need_file(name)
-    char           *name;
+need_file(char *name)
 {
     int             i;
 
@@ -1341,8 +1311,7 @@ need_file(name)
 }
 
 FILE           *
-xfopen(name, mode)
-    char           *name, *mode;
+xfopen(char *name, char *mode)
 {
     FILE           *fp;
 
@@ -1356,9 +1325,7 @@ xfopen(name, mode)
 /*                                                                          */
 /* ------------------------------------------------------------------------ */
 static          boolean
-open_old_archive_1(name, v_fp)
-    char           *name;
-    FILE          **v_fp;
+open_old_archive_1(char *name, FILE **v_fp)
 {
     FILE           *fp;
     struct stat     stbuf;
@@ -1453,8 +1420,7 @@ ret:
 
 /* ------------------------------------------------------------------------ */
 int
-inquire(msg, name, selective)
-    char           *msg, *name, *selective;
+inquire(char *msg, char *name, char *selective)
 {
     char            buffer[1024];
     char           *p;
@@ -1478,8 +1444,7 @@ inquire(msg, name, selective)
 
 /* ------------------------------------------------------------------------ */
 void
-write_archive_tail(nafp)
-    FILE           *nafp;
+write_archive_tail(FILE *nafp)
 {
     putc(0x00, nafp);
 }
@@ -1488,8 +1453,7 @@ write_archive_tail(nafp)
 #undef exit
 
 void
-lha_exit(status)
-    int status;
+lha_exit(int status)
 {
     cleanup();
     exit(status);

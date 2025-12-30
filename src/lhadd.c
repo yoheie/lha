@@ -16,9 +16,7 @@ static char    *new_archive_name;
 static time_t most_recent;      /* for time-stamp archiving */
 
 static void
-copy_old_one(oafp, nafp, hdr)
-    FILE           *oafp, *nafp;
-    LzHeader       *hdr;
+copy_old_one(FILE *oafp, FILE *nafp, LzHeader *hdr)
 {
     if (noexec) {
         fseeko(oafp, hdr->header_size + hdr->packed_size, SEEK_CUR);
@@ -37,9 +35,7 @@ copy_old_one(oafp, nafp, hdr)
 }
 
 static void
-add_one(fp, nafp, hdr)
-    FILE           *fp, *nafp;
-    LzHeader       *hdr;
+add_one(FILE *fp, FILE *nafp, LzHeader *hdr)
 {
     off_t header_pos, next_pos, org_pos, data_pos;
     off_t v_original_size, v_packed_size;
@@ -102,9 +98,7 @@ add_one(fp, nafp, hdr)
 }
 
 FILE           *
-append_it(name, oafp, nafp)
-    char           *name;
-    FILE           *oafp, *nafp;
+append_it(char *name, FILE *oafp, FILE *nafp)
 {
     LzHeader        ahdr, hdr;
     FILE           *fp;
@@ -213,8 +207,7 @@ append_it(name, oafp, nafp)
 
 /* ------------------------------------------------------------------------ */
 static void
-find_update_files(oafp)
-    FILE           *oafp;   /* old archive */
+find_update_files(FILE *oafp)  /* oafp: old archive */
 {
     char            name[FILENAME_LENGTH];
     struct string_pool sp;
@@ -249,8 +242,7 @@ find_update_files(oafp)
 
 /* ------------------------------------------------------------------------ */
 static void
-delete(oafp, nafp)
-    FILE           *oafp, *nafp;
+delete(FILE *oafp, FILE *nafp)
 {
     LzHeader ahdr;
     off_t old_header_pos;
@@ -345,8 +337,7 @@ report_archive_name_if_different()
 
 /* ------------------------------------------------------------------------ */
 void
-temporary_to_new_archive_file(new_archive_size)
-    off_t new_archive_size;
+temporary_to_new_archive_file(off_t new_archive_size)
 {
     FILE *oafp, *nafp;
 
@@ -412,8 +403,7 @@ set_archive_file_mode()
 /*                          REMOVE FILE/DIRECTORY                           */
 /* ------------------------------------------------------------------------ */
 static void
-remove_one(name)
-    char           *name;
+remove_one(char *name)
 {
     struct stat     stbuf;
     int             filec;
@@ -459,9 +449,7 @@ remove_one(name)
 }
 
 static void
-remove_files(filec, filev)
-    int             filec;
-    char          **filev;
+remove_files(int filec, char **filev)
 {
     int             i;
 

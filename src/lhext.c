@@ -35,8 +35,7 @@ static boolean decode_macbinary(FILE *ofp, off_t size, const char *outPath);
 
 /* ------------------------------------------------------------------------ */
 static          boolean
-inquire_extract(name)
-    char           *name;
+inquire_extract(char *name)
 {
     struct stat     stbuf;
 
@@ -128,8 +127,7 @@ make_name_with_pathcheck(char *name, size_t namesz, const char *q)
 
 /* ------------------------------------------------------------------------ */
 static          boolean
-make_parent_path(name)
-    char           *name;
+make_parent_path(char *name)
 {
     char            path[FILENAME_LENGTH];
     struct stat     stbuf;
@@ -184,8 +182,7 @@ make_parent_path(name)
 
 /* ------------------------------------------------------------------------ */
 static FILE    *
-open_with_make_path(name)
-    char           *name;
+open_with_make_path(char *name)
 {
     FILE           *fp;
 
@@ -199,9 +196,7 @@ open_with_make_path(name)
 
 /* ------------------------------------------------------------------------ */
 static int
-symlink_with_make_path(realname, name)
-    const char     *realname;
-    const char     *name;
+symlink_with_make_path(const char *realname, const char *name)
 {
     int l_code;
 
@@ -216,9 +211,7 @@ symlink_with_make_path(realname, name)
 
 /* ------------------------------------------------------------------------ */
 static void
-adjust_info(name, hdr)
-    char           *name;
-    LzHeader       *hdr;
+adjust_info(char *name, LzHeader *hdr)
 {
 #if HAVE_UTIMES
     struct timeval timevals[2];
@@ -283,9 +276,8 @@ adjust_info(name, hdr)
 
 /* ------------------------------------------------------------------------ */
 static off_t
-extract_one(afp, hdr)
-    FILE           *afp;    /* archive file */
-    LzHeader       *hdr;
+extract_one(FILE *afp,  /* archive file */
+            LzHeader *hdr)
 {
     FILE           *fp; /* output file */
 #if HAVE_LIBAPPLEFILE
@@ -753,10 +745,7 @@ static void adjust_dirinfo()
 
 #if HAVE_LIBAPPLEFILE
 static boolean
-decode_macbinary(ofp, size, outPath)
-    FILE *ofp;
-    off_t size;
-    const char *outPath;
+decode_macbinary(FILE *ofp, off_t size, const char *outPath)
 {
     af_file_t *afp = NULL;
     FILE *ifp = NULL;
