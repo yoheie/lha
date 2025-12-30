@@ -127,7 +127,7 @@ make_name_with_pathcheck(char *name, size_t namesz, const char *q)
 
 /* ------------------------------------------------------------------------ */
 static          boolean
-make_parent_path(char *name)
+make_parent_path(const char *name)
 {
     char            path[FILENAME_LENGTH];
     struct stat     stbuf;
