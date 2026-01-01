@@ -16,12 +16,9 @@
 #include <errno.h>
 
 off_t
-copyfile(f1, f2, size, text_flg, crcp)  /* return: size of source file */
-    FILE *f1;
-    FILE *f2;
-    off_t size;
-    int text_flg;               /* 0: binary, 1: read text, 2: write text */
-    unsigned int *crcp;
+copyfile(FILE *f1, FILE *f2, off_t size,
+         int text_flg,        /* 0: binary, 1: read text, 2: write text */
+         unsigned int *crcp)  /* return: size of source file */
 {
     unsigned short  xsize;
     char *buf;
@@ -84,11 +81,7 @@ copyfile(f1, f2, size, text_flg, crcp)  /* return: size of source file */
 }
 
 int
-encode_stored_crc(ifp, ofp, size, original_size_var, write_size_var)
-    FILE *ifp, *ofp;
-    off_t size;
-    off_t *original_size_var;
-    off_t *write_size_var;
+encode_stored_crc(FILE *ifp, FILE *ofp, off_t size, off_t *original_size_var, off_t *write_size_var)
 {
     int save_quiet;
     unsigned int crc;
@@ -103,8 +96,7 @@ encode_stored_crc(ifp, ofp, size, original_size_var, write_size_var)
 
 /* If TRUE, archive file name is msdos SFX file name. */
 boolean
-archive_is_msdos_sfx1(name)
-    char *name;
+archive_is_msdos_sfx1(char *name)
 {
     int len = strlen(name);
 
@@ -125,8 +117,7 @@ archive_is_msdos_sfx1(name)
  */
 #ifndef HAVE_STRDUP
 char *
-strdup(buf)
-    const char *buf;
+strdup(const char *buf)
 {
     char *p;
 
@@ -142,9 +133,7 @@ strdup(buf)
  */
 #ifndef HAVE_MEMMOVE
 void *
-memmove(dst, src, cnt)
-    register char *dst, *src;
-    register int cnt;
+memmove(register char *dst, register char *src, register int cnt)
 {
     if (dst == src)
         return dst;
@@ -168,8 +157,7 @@ memmove(dst, src, cnt)
 #include <ctype.h>
 
 int
-strcasecmp(p1, p2)
-    const char *p1, *p2;
+strcasecmp(const char *p1, const char *p2)
 {
     while (*p1 && *p2) {
 	if (toupper(*p1) != toupper(*p2))
@@ -184,10 +172,7 @@ strcasecmp(p1, p2)
 #ifndef HAVE_MEMSET
 /* Public Domain memset(3) */
 char *
-memset(s, c, n)
-    char *s;
-    int c;
-    size_t n;
+memset(char *s, int c, size_t n)
 {
     char *p = s;
 
@@ -231,7 +216,7 @@ char *
 xstrchr(const char *s, int c)
 {
     if (c == 0)
-        return s + strlen(s);
+        return (char*)s + strlen(s);
 
     while (*s) {
         if ((unsigned char)*s == (unsigned char)c)

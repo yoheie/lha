@@ -13,14 +13,13 @@
  * Returns true if string s matches pattern p.
  */
 int
-patmatch(p, s, f)
-    register char  *p;  /* pattern */
-    register char  *s;  /* string to match */
-    int             f;  /* flag for case force */
+patmatch(register char *p,  /* pattern */
+         register char *s,  /* string to match */
+         int f)             /* flag for case force */
 {
     char            pc; /* a single character from pattern */
 
-    while (pc = ((f && islower(*p)) ? toupper(*p++) : *p++)) {
+    while ((pc = ((f && islower(*p)) ? toupper(*p++) : *p++))) {
         if (pc == '*') {
             do {    /* look for match till s exhausted */
                 if (patmatch(p, s, f))

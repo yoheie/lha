@@ -38,11 +38,7 @@ carriage_return()
 }
 
 void
-start_indicator(name, size, msg, def_indicator_threshold)
-    char           *name;
-    off_t          size;
-    char           *msg;
-    long            def_indicator_threshold;
+start_indicator(char *name, off_t size, char *msg, long def_indicator_threshold)
 {
 #ifdef NEED_INCREMENTAL_INDICATOR
     long i;
@@ -89,8 +85,7 @@ start_indicator(name, size, msg, def_indicator_threshold)
 
 #ifdef NEED_INCREMENTAL_INDICATOR
 void
-put_indicator(count)
-    long int        count;
+put_indicator(long int count)
 {
     reading_size += count;
     if (!quiet && indicator_threshold) {
@@ -104,10 +99,7 @@ put_indicator(count)
 #endif
 
 void
-finish_indicator2(name, msg, pcnt)
-    char           *name;
-    char           *msg;
-    int             pcnt;
+finish_indicator2(char *name, char *msg, int pcnt)
 {
     if (quiet)
         return;
@@ -124,9 +116,7 @@ finish_indicator2(name, msg, pcnt)
 }
 
 void
-finish_indicator(name, msg)
-    char           *name;
-    char           *msg;
+finish_indicator(char *name, char *msg)
 {
     if (quiet)
         return;

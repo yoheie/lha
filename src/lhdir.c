@@ -36,8 +36,7 @@
 
 /* ------------------------------------------------------------------------ */
 DIR            *
-opendir(name)
-    char           *name;
+opendir(char *name)
 {
     register DIR   *dirp;
     register int    fd;
@@ -58,8 +57,7 @@ opendir(name)
 
 /* ------------------------------------------------------------------------ */
 struct direct  *
-readdir(dirp)
-    register DIR   *dirp;
+readdir(register DIR *dirp)
 {
     static struct direct lhdir;
     register struct old_direct *dp;
@@ -90,8 +88,7 @@ readdir(dirp)
 }
 
 /* ------------------------------------------------------------------------ */
-closedir(dirp)
-    DIR            *dirp;
+closedir(DIR *dirp)
 {
     close(dirp->dd_fd);
     free(dirp);

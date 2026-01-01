@@ -9,14 +9,9 @@
 #include "lha.h"
 
 int
-decode_lzhuf(infp, outfp, original_size, packed_size, name, method, read_sizep)
-    FILE           *infp;
-    FILE           *outfp;
-    off_t           original_size;
-    off_t           packed_size;
-    char           *name;
-    int             method;
-    off_t          *read_sizep;
+decode_lzhuf(FILE *infp, FILE *outfp,
+             off_t original_size, off_t packed_size,
+             char *name, int method, off_t *read_sizep)
 {
     unsigned int crc;
     struct interfacing interface;
