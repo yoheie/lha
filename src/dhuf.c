@@ -83,9 +83,7 @@ decode_start_dyn( /* void */ )
 
 /* ------------------------------------------------------------------------ */
 static void
-reconst(start, end)
-    int             start;
-    int             end;
+reconst(int start, int end)
 {
     int             i, j, k, l, b;
     unsigned int    f, g;
@@ -139,8 +137,7 @@ reconst(start, end)
 
 /* ------------------------------------------------------------------------ */
 static int
-swap_inc(p)
-    int             p;
+swap_inc(int p)
 {
     int             b, q, r, s;
 
@@ -180,8 +177,7 @@ Adjust:
 
 /* ------------------------------------------------------------------------ */
 static void
-update_c(p)
-    int             p;
+update_c(int p)
 {
     int             q;
 
@@ -197,8 +193,7 @@ update_c(p)
 
 /* ------------------------------------------------------------------------ */
 static void
-update_p(p)
-    int             p;
+update_p(int p)
 {
     int             q;
 
@@ -216,8 +211,7 @@ update_p(p)
 
 /* ------------------------------------------------------------------------ */
 static void
-make_new_node(p)
-    int             p;
+make_new_node(int p)
 {
     int             q, r;
 
@@ -240,8 +234,7 @@ make_new_node(p)
 
 /* ------------------------------------------------------------------------ */
 static void
-encode_c_dyn(c)
-    unsigned int    c;
+encode_c_dyn(unsigned int c)
 {
     unsigned int    bits;
     int             p, d, cnt;
@@ -333,9 +326,7 @@ decode_p_dyn( /* void */ )
 /* ------------------------------------------------------------------------ */
 /* lh1 */
 void
-output_dyn(code, pos)
-    unsigned int    code;
-    unsigned int    pos;
+output_dyn(unsigned int code, unsigned int pos)
 {
     encode_c_dyn(code);
     if (code >= 0x100) {

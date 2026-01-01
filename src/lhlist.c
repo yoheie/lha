@@ -41,8 +41,7 @@ print_size(off_t packed_size, off_t original_size)
 /* ------------------------------------------------------------------------ */
 /* need 12 or 17 (when verbose_listing is TRUE) column spaces */
 static void
-print_stamp(t)
-    time_t t;
+print_stamp(time_t t)
 {
     static unsigned int threshold;
     static char     t_month[12 * 3 + 1] = "JanFebMarAprMayJunJulAugSepOctNovDec";
@@ -121,8 +120,7 @@ list_header()
 
 /* ------------------------------------------------------------------------ */
 static void
-list_one(hdr)
-    register LzHeader *hdr;
+list_one(register LzHeader *hdr)
 {
     register int    mode = 0;
     register char  *p;
@@ -278,9 +276,7 @@ list_one(hdr)
 
 /* ------------------------------------------------------------------------ */
 static void
-list_tailer(list_files, packed_size_total, original_size_total)
-    int list_files;
-    off_t packed_size_total, original_size_total;
+list_tailer(int list_files, off_t packed_size_total, off_t original_size_total)
 {
     struct stat     stbuf;
 

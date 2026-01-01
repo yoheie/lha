@@ -33,10 +33,7 @@ make_crctable( /* void */ )
 
 /* ------------------------------------------------------------------------ */
 unsigned int
-calccrc(crc, p, n)
-    unsigned int crc;
-    char  *p;
-    unsigned int    n;
+calccrc(unsigned int crc, char *p, unsigned int n)
 {
     while (n-- > 0)
         crc = UPDATE_CRC(crc, *p++);
@@ -45,11 +42,7 @@ calccrc(crc, p, n)
 
 /* ------------------------------------------------------------------------ */
 int
-fread_crc(crcp, p, n, fp)
-    unsigned int *crcp;
-    void *p;
-    int  n;
-    FILE *fp;
+fread_crc(unsigned int *crcp, void *p, int n, FILE *fp)
 {
     if (text_mode)
         n = fread_txt(p, n, fp);
@@ -65,11 +58,7 @@ fread_crc(crcp, p, n, fp)
 
 /* ------------------------------------------------------------------------ */
 void
-fwrite_crc(crcp, p, n, fp)
-    unsigned int *crcp;
-    void *p;
-    int  n;
-    FILE *fp;
+fwrite_crc(unsigned int *crcp, void *p, int n, FILE *fp)
 {
     *crcp = calccrc(*crcp, p, n);
 #ifdef NEED_INCREMENTAL_INDICATOR
@@ -103,9 +92,7 @@ init_code_cache( /* void */ )
 /* ------------------------------------------------------------------------ */
 #ifdef EUC
 int
-putc_euc(c, fd)
-    int             c;
-    FILE           *fd;
+putc_euc(int c, FILE *fd)
 {
     int             d;
 
@@ -141,10 +128,7 @@ putc_euc(c, fd)
 
 /* ------------------------------------------------------------------------ */
 int
-fwrite_txt(vp, n, fp)
-    void *vp;
-    int  n;
-    FILE *fp;
+fwrite_txt(void *vp, int n, FILE *fp)
 {
     unsigned char *p = vp;
 
@@ -165,10 +149,7 @@ fwrite_txt(vp, n, fp)
 
 /* ------------------------------------------------------------------------ */
 int
-fread_txt(vp, n, fp)
-    void *vp;
-    int  n;
-    FILE *fp;
+fread_txt(void *vp, int n, FILE *fp)
 {
     int             c;
     int             cnt = 0;

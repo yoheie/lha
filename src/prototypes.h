@@ -3,27 +3,27 @@
 /* append.c */
 int encode_lzhuf(FILE *infp, FILE *outfp, off_t size, off_t *original_size_var, off_t *packed_size_var, char *name, char *hdr_method);
 /* bitio.c */
-void fillbuf(int n);
-unsigned short getbits(int n);
-void putcode(int n, int x);
-void putbits(int n, int x);
-void init_getbits(void);
-void init_putbits(void);
+void fillbuf(unsigned char n);
+unsigned short getbits(unsigned char n);
+void putcode(unsigned char n, unsigned short x);
+void putbits(unsigned char n, unsigned short x);
+void init_getbits( /* void */ );
+void init_putbits( /* void */ );
 /* crcio.c */
-void make_crctable(void);
+void make_crctable( /* void */ );
 unsigned int calccrc(unsigned int crc, char *p, unsigned int n);
 int fread_crc(unsigned int *crcp, void *p, int n, FILE *fp);
 void fwrite_crc(unsigned int *crcp, void *p, int n, FILE *fp);
-void init_code_cache(void);
+void init_code_cache( /* void */ );
 int fwrite_txt(void *vp, int n, FILE *fp);
 int fread_txt(void *vp, int n, FILE *fp);
 /* dhuf.c */
-void start_c_dyn(void);
-void decode_start_dyn(void);
-unsigned short decode_c_dyn(void);
-unsigned short decode_p_dyn(void);
+void start_c_dyn( /* void */ );
+void decode_start_dyn( /* void */ );
+unsigned short decode_c_dyn( /* void */ );
+unsigned short decode_p_dyn( /* void */ );
 void output_dyn(unsigned int code, unsigned int pos);
-void encode_end_dyn(void);
+void encode_end_dyn( /* void */ );
 /* extract.c */
 int decode_lzhuf(FILE *infp, FILE *outfp, off_t original_size, off_t packed_size, char *name, int method, off_t *read_sizep);
 /* header.c */
@@ -39,37 +39,37 @@ int cap_to_sjis(char *dst, const char *src, size_t dstsize);
 int sjis_to_cap(char *dst, const char *src, size_t dstsize);
 /* huf.c */
 void output_st1(unsigned int c, unsigned int p);
-unsigned char *alloc_buf(void);
-void encode_start_st1(void);
-void encode_end_st1(void);
-unsigned short decode_c_st1(void);
-unsigned short decode_p_st1(void);
-void decode_start_st1(void);
+unsigned char *alloc_buf( /* void */ );
+void encode_start_st1( /* void */ );
+void encode_end_st1( /* void */ );
+unsigned short decode_c_st1( /* void */ );
+unsigned short decode_p_st1( /* void */ );
+void decode_start_st1( /* void */ );
 /* indicator.c */
 void start_indicator(char *name, off_t size, char *msg, long def_indicator_threshold);
 void put_indicator(long int count);
 void finish_indicator2(char *name, char *msg, int pcnt);
 void finish_indicator(char *name, char *msg);
 /* larc.c */
-unsigned short decode_c_lzs(void);
-unsigned short decode_p_lzs(void);
-void decode_start_lzs(void);
-unsigned short decode_c_lz5(void);
-unsigned short decode_p_lz5(void);
-void decode_start_lz5(void);
+unsigned short decode_c_lzs( /* void */ );
+unsigned short decode_p_lzs( /* void */ );
+void decode_start_lzs( /* void */ );
+unsigned short decode_c_lz5( /* void */ );
+unsigned short decode_p_lz5( /* void */ );
+void decode_start_lz5( /* void */ );
 /* lhadd.c */
 FILE *append_it(char *name, FILE *oafp, FILE *nafp);
-FILE *build_temporary_file(void);
+FILE *build_temporary_file( /* void */ );
 void temporary_to_new_archive_file(off_t new_archive_size);
-void cmd_add(void);
-void cmd_delete(void);
+void cmd_add( /* void */ );
+void cmd_delete( /* void */ );
 /* lharc.c */
 int main(int argc, char *argv[]);
 void message(char *fmt, ...);
 void warning(char *fmt, ...);
 void error(char *fmt, ...);
 void fatal_error(char *fmt, ...);
-void cleanup(void);
+void cleanup( /* void */ );
 RETSIGTYPE interrupt(int signo);
 void *xmalloc(size_t size);
 void *xrealloc(void *old, size_t size);
@@ -81,33 +81,33 @@ void free_sp(char **vector);
 void cleaning_files(int *v_filec, char ***v_filev);
 boolean find_files(char *name, int *v_filec, char ***v_filev);
 void free_files(int filec, char **filev);
-int build_temporary_name(void);
+int build_temporary_name( /* void */ );
 void build_backup_name(char *buffer, char *original, size_t size);
 void build_standard_archive_name(char *buffer, char *original, size_t size);
 boolean need_file(char *name);
 FILE *xfopen(char *name, char *mode);
-FILE *open_old_archive(void);
+FILE *open_old_archive( /* void */ );
 int inquire(char *msg, char *name, char *selective);
 void write_archive_tail(FILE *nafp);
 void lha_exit(int status);
 /* lhext.c */
-void cmd_extract(void);
+void cmd_extract( /* void */ );
 int is_directory_traversal(char *path);
 /* lhlist.c */
-void cmd_list(void);
+void cmd_list( /* void */ );
 /* maketbl.c */
-void make_table(int nchar, unsigned char bitlen[], int tablebits, unsigned short table[]);
+void make_table(short nchar, unsigned char bitlen[], short tablebits, unsigned short table[]);
 /* maketree.c */
 short make_tree(int nchar, unsigned short *freq, unsigned char *bitlen, unsigned short *code);
 /* patmatch.c */
 int patmatch(register char *p, register char *s, int f);
 /* shuf.c */
-void decode_start_st0(void);
-void encode_p_st0(int j);
-void encode_start_fix(void);
-void decode_start_fix(void);
-unsigned short decode_c_st0(void);
-unsigned short decode_p_st0(void);
+void decode_start_st0( /* void */ );
+void encode_p_st0(unsigned short j);
+void encode_start_fix( /* void */ );
+void decode_start_fix( /* void */ );
+unsigned short decode_c_st0( /* void */ );
+unsigned short decode_p_st0( /* void */ );
 /* slide.c */
 int encode_alloc(int method);
 unsigned int encode(struct interfacing *interface);
@@ -123,16 +123,16 @@ char *xmemchr(const char *s, int c, size_t n);
 char *xmemrchr(const char *s, int c, size_t n);
 int str_safe_copy(char *dst, const char *src, int dstsz);
 /* pm2.c */
-void decode_start_pm2(void);
-unsigned short decode_c_pm2(void);
-unsigned short decode_p_pm2(void);
+void decode_start_pm2( /* void */ );
+unsigned short decode_c_pm2( /* void */ );
+unsigned short decode_p_pm2( /* void */ );
 /* pm2tree.c */
-void maketree1(void);
+void maketree1( /* void */ );
 void maketree2(int tree2bound);
-int tree1_get(void);
-int tree2_get(void);
+int tree1_get( /* void */ );
+int tree2_get( /* void */ );
 /* pm2hist.c */
-void hist_init(void);
+void hist_init( /* void */ );
 unsigned char hist_lookup(int n);
 void hist_update(unsigned char data);
 /* support_utf8.c */
